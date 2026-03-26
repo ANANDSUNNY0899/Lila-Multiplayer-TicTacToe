@@ -7,12 +7,12 @@ import { Buffer } from 'buffer';
 if (!global.Buffer) (global as any).Buffer = Buffer;
 const textDecoder = new TextDecoder();
 
-// --- 1. LOCAL WI-FI CONFIGURATION (NO NGROK) ---
-// If testing on Web (PC), use localhost. If on Mobile, use your PC's local IP.
-const SERVER_IP = Platform.OS === 'web' ? "127.0.0.1" : "192.168.29.219"; 
+// --- 1. CLOUDFLARE CONFIGURATION ---
+// Your active Cloudflare Tunnel URL (No https:// or trailing slashes)
+const CLOUD_HOST = "bases-ascii-reed-diane.trycloudflare.com"; 
 
-// Initialize Client (SSL is false, Port is 7350)
-const client = new Client("defaultkey", SERVER_IP, "7350", false);
+// Initialize Client (Port 443 and SSL must be true for Cloudflare!)
+const client = new Client("defaultkey", CLOUD_HOST, "443", true);
 
 export default function TicTacToeScreen() {
   const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
@@ -48,8 +48,8 @@ export default function TicTacToeScreen() {
         const session = await client.authenticateDevice(deviceId, true);
         sessionRef.current = session;
         
-        // Open Socket locally (both SSL and verbose set to false)
-        const socket = client.createSocket(false, false);
+        // Open Socket with SSL enabled (true) to match Cloudflare's HTTPS
+        const socket = client.createSocket(true, false);
         await socket.connect(session, true);
         socketRef.current = socket;
 
@@ -77,7 +77,6 @@ export default function TicTacToeScreen() {
                 setGameOver(true);
                 setStatus("🤝 DRAW");
             } else {
-                // BUG FIX: Changed data.turn to data.nextTurn right here!
                 const isMe = data.nextTurn === sessionRef.current?.user_id;
                 setIsMyTurn(isMe);
                 setStatus(isMe ? "YOUR TURN" : "OPPONENT'S TURN");
