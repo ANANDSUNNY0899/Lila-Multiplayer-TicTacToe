@@ -9,7 +9,7 @@ const textDecoder = new TextDecoder();
 
 // --- 1. CLOUDFLARE CONFIGURATION ---
 // Your active Cloudflare Tunnel URL (No https:// or trailing slashes)
-const CLOUD_HOST = "bases-ascii-reed-diane.trycloudflare.com"; 
+const CLOUD_HOST = "lila-tic-tac-toe-backend.onrender.com"; 
 
 // Initialize Client (Port 443 and SSL must be true for Cloudflare!)
 const client = new Client("defaultkey", CLOUD_HOST, "443", true);
