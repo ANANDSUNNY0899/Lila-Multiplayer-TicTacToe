@@ -1,0 +1,11 @@
+# Node
+node_modules/
+npm-debug.log
+.expo/
+
+# Nakama/Docker
+backend/nakama-data/
+
+# OS
+.DS_Store
+Thumbs.db
