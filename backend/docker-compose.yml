@@ -30,7 +30,7 @@ services:
       cockroachdb:
         condition: service_healthy
     volumes:
-      - ./backend:/nakama/data
+      - .:/nakama/data
     ports:
       - "7349:7349"
       - "7350:7350"
