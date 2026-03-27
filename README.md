@@ -1,49 +1,51 @@
 <div align="center">
 
-# 🎮 LILA Games - Full Stack Assignment
+# 🎮 LILA Games - Full Stack Assignment (Frontend)
 
-### **Multiplayer Server-Authoritative Tic-Tac-Toe**
+### **React Native Web Client for Server-Authoritative Tic-Tac-Toe**
 
-[![Nakama](https://img.shields.io/badge/Nakama-Server-00ADD8?style=for-the-badge&logo=go)](https://heroiclabs.com/)
+[![Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel)](#)
 [![React Native](https://img.shields.io/badge/React_Native-Expo-61DAFB?style=for-the-badge&logo=react)](https://expo.dev/)
-[![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker)](https://www.docker.com/)
+[![Nakama](https://img.shields.io/badge/Nakama-JS_SDK-00ADD8?style=for-the-badge&logo=go)](https://heroiclabs.com/)
 
-A production-ready, real-time multiplayer Tic-Tac-Toe game built with a **Server-Authoritative architecture** using **Nakama** and **React Native (Expo)**. This implementation ensures game integrity by validating all moves server-side, preventing client-side manipulation.
+This repository contains the **Frontend Client** for the LILA Games multiplayer assignment. It is built with React Native (Expo) and connects to a custom Nakama game server deployed on Render to ensure 100% server-authoritative gameplay.
+
+**[🔴 PLAY THE LIVE DEMO HERE](https://your-vercel-url-here.vercel.app)** *(Note: To test matchmaking, please open the link in two separate browser windows/tabs to pair with yourself!)*
 
 </div>
 
 ---
 
-## 🎯 Architecture & Quality Decisions
+## 🎯 Architecture & Client Role
 
-Unlike traditional Tic-Tac-Toe implementations where game logic runs on the client, this project follows LILA's core engineering principles:
+In adherence to LILA's engineering principles, this client is designed as a **"Dumb Renderer."** It contains zero game logic, win-checking algorithms, or state-saving mechanisms. 
 
 <table>
 <tr>
 <td width="50%">
 
-### ⚡ **Authoritative Logic**
-The 3x3 grid, turn management, and winning algorithms live entirely on the Nakama server.
+### 🔒 **Secure Gameplay**
+The client cannot force a win or manipulate the board. It simply sends user input (grid index) to the server and waits for validation.
 
 </td>
 <td width="50%">
 
-### 🔒 **Integrity**
-The client is a "dumb renderer." It sends move requests (OpCode 1) which are validated by the server before any state change is broadcasted.
+### 🌐 **Cloud Connectivity**
+Configured to communicate with the Render backend securely over `WSS` (Port 443) with SSL enabled.
 
 </td>
 </tr>
 <tr>
 <td width="50%">
 
-### 🌐 **Real-time Sync**
-Uses WebSockets for sub-100ms state updates (OpCode 2) across different platforms.
+### 📱 **Cross-Platform**
+Built using Expo, meaning the exact same UI codebase compiles natively to Web, iOS, and Android.
 
 </td>
 <td width="50%">
 
-### 📱 **Cross-Platform**
-The same codebase runs on Android, iOS, and Web browsers.
+### ⚡ **Real-Time Sync**
+Uses the `@heroiclabs/nakama-js` SDK to listen for high-speed socket events and update the React state instantly.
 
 </td>
 </tr>
@@ -53,137 +55,60 @@ The same codebase runs on Android, iOS, and Web browsers.
 
 ## 🛠 Tech Stack
 
-```text
-┌─────────────────────────────────────────────────────────┐
-│  Backend     │  Nakama Server (Go-based) + JS Runtime  │
-│  Frontend    │  React Native (Expo) + Nakama JS SDK    │
-│  Database    │  CockroachDB (SQL-compliant)            │
-│  Infra       │  Docker & Docker Compose                │
-└─────────────────────────────────────────────────────────┘
-```
+* **UI Framework:** React Native / Expo (React Native Web)
+* **Networking:** Nakama JavaScript SDK (`@heroiclabs/nakama-js`)
+* **Deployment:** Vercel (Serverless Edge Network)
+* **Backend:** Nakama Game Server on Render *(See Backend Repo)*
 
 ---
 
-## 📁 Project Structure
+## 🚀 Local Development Setup
 
-```text
-LILA_FullStack_Assignment/
-│
-├── 📂 backend/
-│   ├── docker-compose.yml     # Infrastructure orchestration
-│   ├── local.yml              # Nakama server configuration
-│   └── modules/
-│       └── index.js           # Server-Authoritative Game Logic
-│
-├── 📂 frontend/
-│   ├── app/(tabs)/
-│   │   └── index.tsx          # Main Game UI & Socket Logic
-│   ├── package.json           # Frontend Dependencies
-│   └── app.json               # Expo Configuration
-│
-└── 📄 README.md               # This file
-```
+If you wish to run the client locally:
 
----
-
-## 🚀 Installation & Setup
-
-### **1️⃣ Backend Setup (Docker)**
-
-Ensure Docker Desktop is running.
-
+### **1. Install Dependencies**
 ```bash
-cd backend
-docker-compose up -d
-```
-
-> 💡 *The Nakama Console is available at `http://localhost:7351` (admin/password).*
-
-<br>
-
-### **2️⃣ Frontend Setup**
-
-```bash
-cd frontend
 npm install
 ```
 
-<br>
-
-### **3️⃣ Networking Configuration**
-
-For the app to work on a physical mobile device, the IP address in `frontend/app/(tabs)/index.tsx` must match your laptop's IPv4 address.
-
-```typescript
-const SERVER_IP = Platform.OS === 'web' ? "127.0.0.1" : "YOUR_LAPTOP_IP";
+### **2. Start the Expo Server**
+```bash
+npx expo start
 ```
 
----
+Press `w` in the terminal to launch the web version, or scan the QR code with the Expo Go app to view on mobile.
 
-## 🎮 Running the Application
-
-| Step | Action | Description |
-|:----:|:-------|:------------|
-| **1** | **Start the Frontend** | `npx expo start` |
-| **2** | **Open Player 1 (Mobile)** | Scan the QR code with the **Expo Go** app |
-| **3** | **Open Player 2 (Web)** | Press `w` in the terminal to launch the browser version |
-| **4** | **Play** | Nakama's Matchmaker will automatically pair the two devices. **X goes first.** |
+**Note:** By default, the code is configured to point to the live cloud server (`lila-tic-tac-toe-backend.onrender.com`). If you are running a local backend, update the `CLOUD_HOST` variable in the code to `127.0.0.1`.
 
 ---
 
-## 📡 API Design (OpCodes)
+## 📡 Client-Server API Design (OpCodes)
+
+The client uses a streamlined Socket connection to communicate with the Match state:
 
 <div align="center">
 
-| OpCode | Name | Direction | Payload |
-|:------:|:-----|:---------:|:--------|
-| **1** | **Move Request** | Client → Server | `{ "index": number }` |
-| **2** | **State Update** | Server → Client | `{ "board": array, "nextTurn": string, "winner": string\|null, "isDraw": bool }` |
+| OpCode | Action | Flow | Payload Format |
+|--------|--------|------|----------------|
+| 1 | Move Request | `Client → Server` | `JSON.stringify({ index: number })` |
+| 2 | State Update | `Server → Client` | `{ board: string[], nextTurn: string, winner: string, isDraw: bool }` |
 
 </div>
 
----
-
-## 🧪 Implementation Details
-
-### 🏆 **Winning Algorithm**
-
-The server iterates through 8 predefined winning patterns (Rows, Columns, Diagonals) after every move:
-
-```javascript
-var WIN_PATTERNS = [[0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6]];
-```
-
-If a match is found, the server sets the `winner` ID and broadcasts a final state, locking the board for both players.
-
-<br>
-
-### 🔗 **Matchmaking Hook**
-
-Used `initializer.registerMatchmakerMatched` to ensure that as soon as two players enter the pool, an authoritative match instance is spawned automatically.
+### Matchmaking Flow:
+1. Client authenticates via `DeviceID`.
+2. Client requests a match: `socket.addMatchmaker("*", 2, 2)`.
+3. Server pairs two clients and returns a `match_id`.
+4. Client joins the match and begins listening for `OpCode 2` broadcasts.
 
 ---
 
-## 🐛 Troubleshooting
+## 🔗 Related Repositories
 
-<table>
-<tr>
-<th>Issue</th>
-<th>Solution</th>
-</tr>
-<tr>
-<td>❌ <b>"Offline" Status on Mobile</b></td>
-<td>Ensure Windows Firewall allows inbound traffic on ports <b>7350</b> and <b>7351</b>.</td>
-</tr>
-<tr>
-<td>⏳ <b>Stuck on "Finding Opponent"</b></td>
-<td>Ensure you have two separate instances running (Web + Mobile). The Matchmaker requires exactly 2 players to start.</td>
-</tr>
-<tr>
-<td>💥 <b>Docker Crash</b></td>
-<td>Run <code>docker logs lilaassignment-nakama-1</code> to check for JavaScript syntax errors in the server module.</td>
-</tr>
-</table>
+This architecture is decoupled into two repositories for clean deployment pipelines:
+
+* **Frontend (This Repo):** React Native UI.
+* **Backend Repo:** [Link to your Backend Repository here] - Contains the Dockerized Nakama engine and Go/JS authoritative logic.
 
 ---
 
@@ -191,11 +116,7 @@ Used `initializer.registerMatchmakerMatched` to ensure that as soon as two playe
 
 ## 👨‍💻 Developer
 
-**Developed by:** SUNNY ANAND
+**Developed by:** Sunny Anand  
 **Role:** Full Stack Engineer Assignment - LILA Games
-
----
-
-### ⭐ If you found this project interesting, please give it a star!
 
 </div>
