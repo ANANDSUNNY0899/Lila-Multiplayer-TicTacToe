@@ -10,7 +10,7 @@
 
 This repository contains the **Frontend Client** for the LILA Games multiplayer assignment. It is built with React Native (Expo) and connects to a custom Nakama game server deployed on Render to ensure 100% server-authoritative gameplay.
 
-**[🔴 PLAY THE LIVE DEMO HERE](https://your-vercel-url-here.vercel.app)** *(Note: To test matchmaking, please open the link in two separate browser windows/tabs to pair with yourself!)*
+**[🔴 PLAY THE LIVE DEMO HERE](https://lila-multiplayer-tic-tac-toe.vercel.app/)** *(Note: To test matchmaking, please open the link in two separate browser windows/tabs to pair with yourself!)*
 
 </div>
 
@@ -108,7 +108,7 @@ The client uses a streamlined Socket connection to communicate with the Match st
 This architecture is decoupled into two repositories for clean deployment pipelines:
 
 * **Frontend (This Repo):** React Native UI.
-* **Backend Repo:** [Link to your Backend Repository here] - Contains the Dockerized Nakama engine and Go/JS authoritative logic.
+* **Backend Repo:** [https://github.com/ANANDSUNNY0899/Tictoe_Backend] - Contains the Dockerized Nakama engine and Go/JS authoritative logic.
 
 ---
 
